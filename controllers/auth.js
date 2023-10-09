@@ -30,7 +30,7 @@ const crearUsuario = async ( req, res = response)=>  {
 
         res.json({
             ok:true,
-            body : usuario,
+            usuario,
             token
         });
     } catch (error) {
@@ -52,15 +52,15 @@ const loginUsuario = async ( req, res = response)=>  {
 
     try {
        
-        const usuarioDB = await Usuario.findOne({email});
-        if (!usuarioDB) {
+        const usuario = await Usuario.findOne({email});
+        if (!usuario) {
             return res.status(400).json({
                 ok: false,
                 msg: 'El correo no esta registrado'
             })
         }
         
-        const validPass= bcrypt.compareSync(password,usuarioDB.password)
+        const validPass= bcrypt.compareSync(password,usuario.password)
 
         if (!validPass) {
             return res.status(400).json({
@@ -69,12 +69,12 @@ const loginUsuario = async ( req, res = response)=>  {
             })
         }
 
-        const token  = await generarJWT(usuarioDB.id);
+        const token  = await generarJWT(usuario.id);
 
 
         return res.status(200).json({
             ok: true,
-            usuarioDB,
+            usuario,
             token
         })
 
@@ -96,12 +96,12 @@ const renewToken = async(req,res = response) => {
     const token  = await generarJWT(uid);
     
     
-    const usuarioNew = await  Usuario.findById(uid);
-    console.log(usuarioNew);
+    const usuario = await  Usuario.findById(uid);
+    console.log(usuario);
     
     res.json({
         ok: true,
-        usuarioNew,
+        usuario,
         token
     })
 }
