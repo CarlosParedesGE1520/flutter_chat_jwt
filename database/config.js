@@ -1,0 +1,19 @@
+const mongoose = require('mongoose');
+
+const dbConnection = async ()=>{
+
+    try {
+       await mongoose.connect(process.env.DB_cnn, {
+    
+        })
+       console.log('Db_online'); 
+    } catch (error) {
+        console.log(error);
+        throw new Error('Error en la BD ');
+    }
+}
+
+
+module.exports ={
+    dbConnection
+}
